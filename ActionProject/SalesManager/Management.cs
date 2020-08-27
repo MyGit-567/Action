@@ -12,31 +12,46 @@ using System.Threading.Tasks;
 
 namespace SalesManager
 {
-    class Management
+    public class Management
     {
         public List<Iproduct> _products = new List<Iproduct> { };
         public List<InterfaceAgent> _agents = new List<InterfaceAgent> { };
-        List<InterfaceAgent> _whowantbuy = new List<InterfaceAgent> { };
 
+        public List<Iauction> Auctions { get; set; }
+        //ConcurrentBag<InterfaceAgent> _whowantbuy = new ConcurrentBag<InterfaceAgent> { };
+
+
+        public Management(List<Iauction> auctions)
+        {
+            Auctions = auctions;
+        }
 
         public void Participante()
         {
-            
-            foreach (var agent in _agents)
+            foreach (var auction in Auctions)
             {
-                var obj = agent;
-                Task.Factory.StartNew(itsobject =>
-                {
-                    bool answer = ((InterfaceAgent)itsobject).Participantion();
-                    if (answer)
-                        _whowantbuy.Add(obj);
 
-                }, obj);
+                foreach (var agent in _agents)
+                {
+                    var obj = agent;
+                    Task.Factory.StartNew(itsobject =>
+                    {
+                        bool answer = ((InterfaceAgent)itsobject).Participantion(auction);
+
+                        if (answer)
+                        {
+                            auction.addtolist(agent);
+                        }
+                        // _whowantbuy.Add(obj);
+
+                    }, obj);
+                }
             }
+
 
         }
 
-
+        /*
         public void StartAction() // show the startcost
         {
             Random _random4 = new Random();
@@ -52,34 +67,37 @@ namespace SalesManager
 
             }
         }
-
+        */
+        
+        /*
         public void Descriptionofproduct(Iproduct oneproduct)
         {
             foreach (var agent in _whowantbuy)
             {
                 var obj = agent;
-                Task.Factory.StartNew(itsobject =>
+                Task.Run(() =>
                 {
-                    ((InterfaceAgent)itsobject).abouttheproduct(oneproduct.name());
+                    ((InterfaceAgent)agent).AuctionStart(oneproduct);
 
-                }, obj);
+                });
 
             }
+        
         }
-
-        public void Nameofproduct(Iproduct onename) //show the name of the product
-        {
-                foreach (var agent in _whowantbuy)
+        /*
+                public void Nameofproduct(Iproduct onename) //show the name of the product
                 {
-                    var obj = agent;
-                    Task.Factory.StartNew(itsobject2 =>
-                    {
-                        ((InterfaceAgent)itsobject2).nameofproduct(onename.name());
+                        foreach (var agent in _whowantbuy)
+                        {
+                            var obj = agent;
+                            Task.Factory.StartNew(itsobject2 =>
+                            {
+                                ((InterfaceAgent)itsobject2).nameofproduct(onename.name());
 
-                    }, obj);
-                }
-        }
-
+                            }, obj);
+                        }
+                }*/
+        /*
         public void sellgap()
         {
             Random _random3 = new Random();
@@ -94,31 +112,9 @@ namespace SalesManager
                 }, obj);
             };
         }
+        */
 
-        public void Newpricefromagent(int cost)
-        {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-            foreach (var agent in _whowantbuy)
-            {
-                var obj = agent;
-                Task.Factory.StartNew(itsobject =>
-                {
-                    bool answer = ((InterfaceAgent)itsobject).Participantion();
-                    if (answer)
-
-
-
-                }, obj);
-
-            }
-        }
+       
         
-
-
-
-
-
-
     }
 }

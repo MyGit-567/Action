@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace ActionProject
 {
     public class Agent2 : InterfaceAgent
     {
+        public string agentname => "agent2";
         public void abouttheproduct(string description)
         {
             throw new NotImplementedException();
@@ -22,7 +24,7 @@ namespace ActionProject
             throw new NotImplementedException();
         }
 
-        public bool Participantion()
+        public bool Participantion(Iauction add)
         {
             Random _random8 = new Random();
             double num8 = _random8.NextDouble();
@@ -34,11 +36,26 @@ namespace ActionProject
 
         }
 
-        public bool Newprice(string sentence)
+        public int Newprice()
         {
             Random _random8 = new Random();
-            double num8 = _random8.NextDouble();
-            return num8 > 0.5;
+            int num8 = _random8.Next(600);
+            return num8;
         }
+
+        public void AuctionStart(Iproduct product)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool Suggestion()
+        {
+            Random _random9 = new Random();
+            double num9 = _random9.NextDouble();
+            return num9 > 0.5;
+        }
+
+       
     }
 }

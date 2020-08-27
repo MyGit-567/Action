@@ -6,6 +6,7 @@ namespace ActionProject
 {
     public class Agent3 : InterfaceAgent
     {
+        public string agentname => "agent3";
         public void abouttheproduct(string description)
         {
             throw new NotImplementedException();
@@ -22,7 +23,7 @@ namespace ActionProject
             throw new NotImplementedException();
         }
 
-        public bool Participantion()
+        public bool Participantion(Iauction add)
         {
             Random _random7 = new Random();
             double num7 = _random7.NextDouble();
@@ -34,12 +35,31 @@ namespace ActionProject
 
         }
 
-        public bool Newprice(string sentence)
+        public int Newprice()
         {
             Random _random8 = new Random();
-            double num8 = _random8.NextDouble();
-            return num8 > 0.5;
+            int num8 = _random8.Next(800);
+            return num8;
         }
+
+        public bool Suggestion()
+        {
+            Random _random9 = new Random();
+            double num9 = _random9.NextDouble();
+            return num9 > 0.5;
+
+        }
+
+        public void AuctionStart(Iproduct product)
+        {
+
+        }
+
+        public void Messages(string message)
+        {
+
+        }
+
 
     }
      
