@@ -12,7 +12,6 @@ namespace ActionProject
         ConcurrentBag<InterfaceAgent> wantbuy = new ConcurrentBag<InterfaceAgent> { };
         public int JumpPrice { get; set; }
         public int CurrentPrice { get; set; }
-
         public DateTime StartDatime { get; set; }
         public InterfaceAgent CurrentWinnerAgent { get; set; }
         public Iproduct Product { get; set; }
