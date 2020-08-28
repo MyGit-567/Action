@@ -1,21 +1,21 @@
-﻿using ActionProject;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ActionProject
 {
-    class Auction : Iauction
+    public class Auction : Iauction
     {
-        ConcurrentBag<InterfaceAgent> wantbuy = new ConcurrentBag<InterfaceAgent> { };
+        private Object _locker = new object();
+        ConcurrentBag<IAgent> wantbuy = new ConcurrentBag<IAgent> { };
         public int JumpPrice { get; set; }
         public int CurrentPrice { get; set; }
         public DateTime StartDatime { get; set; }
-        public InterfaceAgent CurrentWinnerAgent { get; set; }
+        public IAgent CurrentWinnerAgent { get; set; }
         public Iproduct Product { get; set; }
-        public Auction(int startPrice, int jumpPrice, DateTime startDatime , Iproduct product)
+
+        public Auction(int startPrice, int jumpPrice, DateTime startDatime, Iproduct product)
         {
             JumpPrice = jumpPrice;
             CurrentPrice = startPrice;
@@ -24,14 +24,14 @@ namespace ActionProject
         }
 
         private string agent10 = "";
-        public void addtolist(InterfaceAgent agent)
+        public void addtolist(IAgent agent)
         {
             wantbuy.Add(agent);
         }
 
-        public bool CheckTheprice (int price)
+        public bool CheckTheprice(int price)
         {
-            if(price > CurrentPrice + JumpPrice)
+            if (price > CurrentPrice + JumpPrice)
             {
                 return true;
             }
@@ -41,33 +41,44 @@ namespace ActionProject
             }
         }
 
-        public void Newpricefromagent(int cost)
+        public void Newpricefromagent()
         {
             int count = 0;
+            List<Task> tasks = new List<Task>();
+          
             while (count < 100)
             {
                 foreach (var agent in wantbuy)
                 {
                     var obj = agent;
-                    Task.Factory.StartNew(itsobject =>
+                    tasks.Add(Task.Factory.StartNew(itsobject =>
                     {
-                        bool answer = ((InterfaceAgent)itsobject).Suggestion();
-                        if (answer)
-                        {
-                            int price = agent.Newprice();
-                            bool check = CheckTheprice(price); //validate the offer price
-                            if (check)
+                        lock (_locker)
+                        { 
+                            bool choice = ((IAgent)itsobject).Suggestion();
+                            if (choice)
                             {
-                                CurrentPrice = price; // update the current price
-                                agent10 = agent.agentname;
+
+
+                                int price = ((IAgent)itsobject).Newprice();
+                                bool check = CheckTheprice(price); //validate the offer price
+                                if (check)
+                                {
+                                    CurrentPrice = price; // update the current price
+                                    agent10 = ((IAgent)itsobject).Name;
+
+                                }
                             }
+                            
                         }
-                        
-                    }, obj);
+
+                    }, obj));
                 }
-                count++;              
+                count++;
             }
-                Console.WriteLine("The winner is:" + agent10 + "The product is sold at: " + CurrentPrice);            
+
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("The winner is: " + agent10 + " The product is sold at: " + CurrentPrice);
         }
     }
 }

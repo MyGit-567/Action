@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
+﻿
 namespace ActionProject
 {
-    public class House
+    public class House : Iproduct
     {
         public int airConditioner { get; }
         public int safeRoom { get; }
@@ -24,15 +20,23 @@ namespace ActionProject
             diningroom = Diningroom;
         }
 
-        public void DescriptionAttribute()
+        public string Description()
         {
-            Console.WriteLine("1.aircondishiner" = airConditioner);
-            Console.WriteLine("2.saferoom" = safeRoom);
-            Console.WriteLine("3.highway" = highway);
-            Console.WriteLine("4.access for disables" = accessfordisabled);
-            Console.WriteLine("5.toilet" = toilet);
-            Console.WriteLine("6.dining room" + diningroom);
+            var sb = new System.Text.StringBuilder();
+
+            sb.AppendLine($"1.aircondishiner {airConditioner}");
+            sb.AppendLine($"2.saferoom  {safeRoom}");
+            sb.AppendLine($"3.highway { highway}");
+            sb.AppendLine($"4.access for disables { accessfordisabled}");
+            sb.AppendLine($"5.toilet {toilet}");
+            sb.AppendLine($"6.dining room {diningroom}");
+
+            return sb.ToString();
         }
 
+        public string name()
+        {
+            return "bla";
+        }        
     }
 }

@@ -1,61 +1,36 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace ActionProject
 {
-    public class Agent2 : InterfaceAgent
+    public class Agent2 : IAgent
     {
-        public string agentname => "agent2";
-        public void abouttheproduct(string description)
-        {
-            throw new NotImplementedException();
-        }
+        private Randomclass _randomclass2;
+        public string Name => "agent2";
 
-
-        public void getstartcost(int num)
+        public Agent2()
         {
-           
-        }
-
-        public void nameofproduct(string name)
-        {
-            throw new NotImplementedException();
+            _randomclass2 = new Randomclass();
         }
 
         public bool Participantion(Iauction add)
         {
-            Random _random8 = new Random();
-            double num8 = _random8.NextDouble();
-            return num8 > 0.5;
+            return _randomclass2.RandomBool();
         }
-
-        public void getsellgap(int number)
-        {
-
-        }
-
+      
         public int Newprice()
         {
             Random _random8 = new Random();
             int num8 = _random8.Next(600);
+            Console.WriteLine($"{Name} suggested {num8}");
             return num8;
         }
 
-        public void AuctionStart(Iproduct product)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public bool Suggestion()
         {
-            Random _random9 = new Random();
-            double num9 = _random9.NextDouble();
-            return num9 > 0.5;
+            return _randomclass2.RandomBool();
         }
 
-       
     }
 }

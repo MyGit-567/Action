@@ -11,9 +11,12 @@ namespace SalesManager
 
             Product1 product1 = new Product1();
             Product2 product2 = new Product2();
+            House house1 = new House(3, 1, true, true, 1, 1);
+
 
             Auction auction = new Auction(200, 100, DateTime.Now, product1);
             Auction auction2 = new Auction(400, 200, DateTime.Now, product2);
+            Auction auction3 = new Auction(400, 200, DateTime.Now, house1);
 
 
             List<Iauction> auctions = new List<Iauction>();
@@ -30,10 +33,14 @@ namespace SalesManager
             management._agents.Add(agent2);
             management._agents.Add(agent3);
 
-            House house1 = new House(3, 1, true, true, 1, 1);
 
+            management.Participante();
+            auction.Newpricefromagent();
+            auction2.Newpricefromagent();
+            auction3.Newpricefromagent();
 
-
+            Console.ReadLine();
+            
         }
     }
 }
